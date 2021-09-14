@@ -3,7 +3,7 @@ import React, { Fragment, useState } from "react";
 const EditTodo = ({ todo }) => {
   //editText function
 
-  const editText = async (id) => {
+  const editText = async id => {
     try {
       const body = { description };
 
