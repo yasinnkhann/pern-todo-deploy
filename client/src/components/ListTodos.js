@@ -1,70 +1,153 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import EditTodo from './EditTodo';
+import React, { Fragment, useState, useEffect } from "react";
+import EditTodo from "./EditTodo";
 
-export default function ListTodos() {
+const ListTodos = () => {
+  const [todos, setTodos] = useState([]);
 
-    const [todos, setTodos] = useState([]);
+  //delete todo function
 
-    useEffect(() => {
+  async function deleteTodo(id) {
+    try {
+      const res = await fetch(`/todos/${id}`, {
+        method: "DELETE",
+      });
 
-        const getTodos = async () => {
-
-            try {
-                const res = await fetch('/todos');
-                const data = await res.json();
-                console.log(data);
-                setTodos(data);
-            } catch (err) {
-                console.error(err.message);
-            }
-        }
-        getTodos();
-    }, [])
-
-    const deleteTodo = async id => {
-        try {
-            const deleteTodo = await fetch(`/todos/${id}`, {
-                method: 'DELETE'
-            }); 
-            console.log(deleteTodo);
-            setTodos(todos.filter(todo => todo.todo_id !== id))
-        } catch (err) {
-            console.error(err.message);
-        }
+      setTodos(todos.filter((todo) => todo.todo_id !== id));
+    } catch (err) {
+      console.error(err.message);
     }
+  }
 
-    return (
-        <Fragment>
-            <table className="table mt-5 text-center">
-                <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-                </thead>
-                <tbody>
+  async function getTodos() {
+    const res = await fetch("/todos");
 
-                {/* <tr>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>john@example.com</td>
-                </tr> */}
-                {todos.map(todo => (
-                    <tr key={todo.todo_id}>
-                        <td>{todo.description}</td>
-                        <td>{<EditTodo todo={todo} />}</td>
-                        <td>
-                            <button 
-                            className="btn btn-danger"
-                            onClick={() => deleteTodo(todo.todo_id)}
-                            >
-                                Delete
-                            </button></td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </Fragment>
-    );
-}
+    const todoArray = await res.json();
+
+    setTodos(todoArray);
+  }
+
+  useEffect(() => {
+    getTodos();
+  }, []);
+
+  console.log(todos);
+
+  return (
+    <Fragment>
+      {" "}
+      <table class="table mt-5">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {todos.map((todo) => (
+            <tr key={todo.todo_id}>
+              <td>{todo.description}</td>
+              <td>
+                <EditTodo todo={todo} />
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteTodo(todo.todo_id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </Fragment>
+  );
+};
+
+export default ListTodos;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { Fragment, useEffect, useState } from 'react';
+// import EditTodo from './EditTodo';
+
+// export default function ListTodos() {
+
+//     const [todos, setTodos] = useState([]);
+
+//     useEffect(() => {
+
+//         const getTodos = async () => {
+
+//             try {
+//                 const res = await fetch('/todos');
+//                 const data = await res.json();
+//                 console.log(data);
+//                 setTodos(data);
+//             } catch (err) {
+//                 console.error(err.message);
+//             }
+//         }
+//         getTodos();
+//     }, [])
+
+//     const deleteTodo = async id => {
+//         try {
+//             const deleteTodo = await fetch(`/todos/${id}`, {
+//                 method: 'DELETE'
+//             }); 
+//             console.log(deleteTodo);
+//             setTodos(todos.filter(todo => todo.todo_id !== id))
+//         } catch (err) {
+//             console.error(err.message);
+//         }
+//     }
+
+//     return (
+//         <Fragment>
+//             <table className="table mt-5 text-center">
+//                 <thead>
+//                 <tr>
+//                     <th>Description</th>
+//                     <th>Edit</th>
+//                     <th>Delete</th>
+//                 </tr>
+//                 </thead>
+//                 <tbody>
+
+//                 {/* <tr>
+//                     <td>John</td>
+//                     <td>Doe</td>
+//                     <td>john@example.com</td>
+//                 </tr> */}
+//                 {todos.map(todo => (
+//                     <tr key={todo.todo_id}>
+//                         <td>{todo.description}</td>
+//                         <td>{<EditTodo todo={todo} />}</td>
+//                         <td>
+//                             <button 
+//                             className="btn btn-danger"
+//                             onClick={() => deleteTodo(todo.todo_id)}
+//                             >
+//                                 Delete
+//                             </button></td>
+//                     </tr>
+//                 ))}
+//                 </tbody>
+//             </table>
+//         </Fragment>
+//     );
+// }
