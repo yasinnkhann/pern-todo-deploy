@@ -10,7 +10,7 @@ export default function ListTodos() {
         const getTodos = async () => {
 
             try {
-                const res = await fetch('http://localhost:5000/todos');
+                const res = await fetch('/todos');
                 const data = await res.json();
                 console.log(data);
                 setTodos(data);
@@ -23,7 +23,7 @@ export default function ListTodos() {
 
     const deleteTodo = async id => {
         try {
-            const deleteTodo = await fetch(`http://localhost:5000/todos/${id}`, {
+            const deleteTodo = await fetch(`/todos/${id}`, {
                 method: 'DELETE'
             }); 
             console.log(deleteTodo);

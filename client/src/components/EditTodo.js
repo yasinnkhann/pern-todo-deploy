@@ -9,7 +9,7 @@ export default function EditTodo({ todo }) {
         const body = { description };
 
         try {
-            const res = await fetch(`http://localhost:5000/todos/${todo.todo_id}`, {
+            const res = await fetch(`/todos/${todo.todo_id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify(body)
